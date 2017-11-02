@@ -24,6 +24,6 @@ New-Item "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVers
 Invoke-WebRequest -Uri 'https://download.sysinternals.com/files/Procdump.zip' -OutFile Procdump.zip
 Expand-Archive "Procdump.zip" -DestinationPath "procdump" -Force
 cd procdump
-start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 vstest.console -acceptula"
-start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 vstest.executionengine -acceptula"
+start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 vstest.console -accepteula"
+start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 vstest.executionengine -accepteula"
 
