@@ -22,8 +22,11 @@ New-Item "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVers
 New-Item "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\vstest.discoveryengine.x86.exe"
 
 Invoke-WebRequest -Uri 'https://download.sysinternals.com/files/Procdump.zip' -OutFile Procdump.zip
+Invoke-WebRequest -Uri 'https://download.microsoft.com/download/5/C/C/5CCCFF9B-08C4-4352-9DBF-DF44E3A2E9EA/PerfView.zip' -OutFile PerfView.zip
 Expand-Archive "Procdump.zip" -DestinationPath "procdump" -Force
+Expand-Archive "PerfView.zip" -DestinationPath "procdump" -Force
 cd procdump
-start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 -ma vstest.console -accepteula"
-start-process powershell -argument "$PWD\procdump.exe -w -s 7 -n 100 -ma vstest.executionengine -accepteula"
+.\PerfView.exe start /AcceptEula /LogFile=PerfViewCollect.log
+start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 100 -ma vstest.console -accepteula >vstestconsole.txt"
+start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 100 -ma vstest.executionengine -accepteula >vstestexcution.txt"
 
