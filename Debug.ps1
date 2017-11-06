@@ -26,7 +26,7 @@ Invoke-WebRequest -Uri 'https://download.microsoft.com/download/5/C/C/5CCCFF9B-0
 Expand-Archive "Procdump.zip" -DestinationPath "procdump" -Force
 Expand-Archive "PerfView.zip" -DestinationPath "procdump" -Force
 cd procdump
-.\PerfView.exe  collect /MaxCollectSec:800 /AcceptEula /logFile=collectionLog.txt
+start-process powershell -argument "$PWD\PerfView.exe  collect /MaxCollectSec:800 /AcceptEula /logFile=collectionLog.txt"
 start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 300 -ma vstest.console -accepteula >vstestconsole.txt"
 start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 300 -ma vstest.executionengine -accepteula >vstestexcution.txt"
 
