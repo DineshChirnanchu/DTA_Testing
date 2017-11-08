@@ -23,8 +23,12 @@ New-Item "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVers
 
 
 Invoke-WebRequest -Uri 'https://download.microsoft.com/download/5/C/C/5CCCFF9B-08C4-4352-9DBF-DF44E3A2E9EA/PerfView.zip' -OutFile PerfView.zip
+Invoke-WebRequest -Uri 'https://download.sysinternals.com/files/Procdump.zip' -OutFile Procdump.zip
+
 Expand-Archive "PerfView.zip" -DestinationPath "procdump" -Force
+Expand-Archive "Procdump.zip" -DestinationPath "procdump" -Force
+
 cd procdump
 start-process powershell -argument "$PWD\PerfView.exe  collect /MaxCollectSec:500 /ThreadTime /AcceptEula /logFile=collectionLog.txt"
-
-
+start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 300 -ma IntelliTrace -accepteula >intellitrace.txt"
+start-process powershell -argument "$PWD\procdump.exe -w -s 2 -n 300 -ma vstest.executionengine -accepteula >vstestexcution.txt"
