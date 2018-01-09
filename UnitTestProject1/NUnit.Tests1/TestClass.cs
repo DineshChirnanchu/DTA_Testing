@@ -4,7 +4,7 @@ namespace NUnit.Tests1
     [TestFixture]
     public class TestClass
     {
-        [Test]
+        [Test, Author("NunitTest"), Category("Nunit")]
         public void TestMethod()
         {
             System.Threading.Thread.Sleep(5000);
@@ -13,6 +13,20 @@ namespace NUnit.Tests1
 
         [Test, Author("NunitTest"), Category("Nunit")]
         public void TestMethod2()
+        {
+            System.Threading.Thread.Sleep(5000);
+            Assert.Pass("Your first passing test");
+        }
+        
+        [Test, Author("NunitTest"), Category("Nunit")]
+        public void TestMethod5()
+        {
+            System.Threading.Thread.Sleep(5000);
+            Assert.Pass("Your first passing test");
+        }
+        
+        [Test, Author("NunitTest"), Category("Nunit")]
+        public void TestMethod6()
         {
             System.Threading.Thread.Sleep(5000);
             Assert.Pass("Your first passing test");
