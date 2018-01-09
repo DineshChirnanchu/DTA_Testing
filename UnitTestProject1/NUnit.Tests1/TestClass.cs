@@ -45,5 +45,12 @@ namespace NUnit.Tests1
             System.Threading.Thread.Sleep(5000);
             Assert.Pass("Your first passing test");
         }
+        
+        [Test, Author("NunitTest"), Platform("x86")]
+        public void TestMethod7()
+        {
+            System.Threading.Thread.Sleep(5000);
+            Assert.Pass("Your first passing test");
+        }
     }
 }
