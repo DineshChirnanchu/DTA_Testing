@@ -1,0 +1,160 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "newVMName": {
+      "type": "string",
+      "defaultValue": "testvm1"
+    },
+    "labName": {
+      "type": "string",
+      "defaultValue": "nigurrdemo"
+    },
+    "size": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3"
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": "testuser"
+    },
+    "password": {
+      "type": "securestring"
+    },
+    "VSTS_Build_Agent_vstsAccount": {
+      "type": "string",
+      "defaultValue": "mseng"
+    },
+    "VSTS_Build_Agent_vstsPassword": {
+      "type": "securestring"
+    },
+    "VSTS_Build_Agent_agentName": {
+      "type": "string",
+      "defaultValue": "testvm1"
+    },
+    "VSTS_Build_Agent_agentNameSuffix": {
+      "type": "string",
+      "defaultValue": "testagent"
+    },
+    "VSTS_Build_Agent_poolName": {
+      "type": "string",
+      "defaultValue": "Nitin"
+    },
+    "VSTS_Build_Agent_RunAsAutoLogon": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "VSTS_Build_Agent_windowsLogonAccount": {
+      "type": "string",
+      "defaultValue": ".\\testuser"
+    },
+    "VSTS_Build_Agent_windowsLogonPassword": {
+      "type": "securestring"
+    },
+    "VSTS_Build_Agent_driveLetter": {
+      "type": "string",
+      "defaultValue": "C"
+    },
+    "VSTS_Build_Agent_workDirectory": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+    "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
+    "labVirtualNetworkName": "[concat('Dtl', parameters('labName'))]",
+    "vmId": "[resourceId ('Microsoft.DevTestLab/labs/virtualmachines', parameters('labName'), parameters('newVMName'))]",
+    "vmName": "[concat(parameters('labName'), '/', parameters('newVMName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-04-26-preview",
+      "type": "Microsoft.DevTestLab/labs/virtualmachines",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+        "notes": "Windows Server 2016 Datacenter",
+        "galleryImageReference": {
+          "offer": "WindowsServer",
+          "publisher": "MicrosoftWindowsServer",
+          "sku": "2016-Datacenter",
+          "osType": "Windows",
+          "version": "latest"
+        },
+        "size": "[parameters('size')]",
+        "userName": "[parameters('userName')]",
+        "password": "[parameters('password')]",
+        "isAuthenticationWithSshKey": false,
+        "artifacts": [
+          {
+            "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-vsts-build-agent')]",
+            "parameters": [
+              {
+                "name": "vstsAccount",
+                "value": "[parameters('VSTS_Build_Agent_vstsAccount')]"
+              },
+              {
+                "name": "vstsPassword",
+                "value": "[parameters('VSTS_Build_Agent_vstsPassword')]"
+              },
+              {
+                "name": "agentName",
+                "value": "[parameters('VSTS_Build_Agent_agentName')]"
+              },
+              {
+                "name": "agentNameSuffix",
+                "value": "[parameters('VSTS_Build_Agent_agentNameSuffix')]"
+              },
+              {
+                "name": "poolName",
+                "value": "[parameters('VSTS_Build_Agent_poolName')]"
+              },
+              {
+                "name": "RunAsAutoLogon",
+                "value": "[parameters('VSTS_Build_Agent_RunAsAutoLogon')]"
+              },
+              {
+                "name": "windowsLogonAccount",
+                "value": "[parameters('VSTS_Build_Agent_windowsLogonAccount')]"
+              },
+              {
+                "name": "windowsLogonPassword",
+                "value": "[parameters('VSTS_Build_Agent_windowsLogonPassword')]"
+              },
+              {
+                "name": "driveLetter",
+                "value": "[parameters('VSTS_Build_Agent_driveLetter')]"
+              },
+              {
+                "name": "workDirectory",
+                "value": "[parameters('VSTS_Build_Agent_workDirectory')]"
+              }
+            ]
+          }
+        ],
+        "labSubnetName": "[variables('labSubnetName')]",
+        "disallowPublicIpAddress": true,
+        "storageType": "Premium",
+        "allowClaim": false,
+        "networkInterface": {
+          "sharedPublicIpAddressConfiguration": {
+            "inboundNatRules": [
+              {
+                "transportProtocol": "tcp",
+                "backendPort": 3389
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "labVMId": {
+      "type": "string",
+      "value": "[variables('vmId')]"
+    }
+  }
+}
