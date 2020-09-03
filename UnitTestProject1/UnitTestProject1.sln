@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnit.Tests1", "NUnit.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUITProject", "CUITProject\CUITProject.csproj", "{D1BD0272-979F-4AB7-87F1-DB1D763CD3E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlakyTestProject", "FlakyTestProject\FlakyTestProject.csproj", "{745B01FC-A778-4441-9A6C-524C29461C85}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40686417-3FDE-4AB0-B338-CB1BBA5424A7}"
 	ProjectSection(SolutionItems) = preProject
 		SampleRunsettings.runsettings = SampleRunsettings.runsettings
